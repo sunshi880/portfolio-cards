@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Portfolio 2025</title>
+    <style>
+        /* --- CSS STYLING --- */
+        :root {
+            --glass-bg: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.2);
+            --text-color: #ffffff;
+            --accent-color: #4facfe; /* Blue like the video */
+            --bg-dark: #0f172a;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-color);
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* 1. Animated Background Grid */
+        .bg-container {
+            position: absolute;
+            top: -20%;
+            left: -20%;
+            width: 140%;
+            height: 140%;
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 20px;
+            z-index: -1;
+            opacity: 0.6;
+            animation: moveBackground 60s linear infinite alternate;
+        }
+
+        .bg-item {
+            background-size: cover;
+            background-position: center;
+            border-radius: 12px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+            /* Fallback color if images don't load */
+            background-color: #334155; 
+        }
+
+        @keyframes moveBackground {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(-50px, -50px); }
+        }
+
+        /* 2. The Glass Card (Main Container) */
+        .card {
+            width: 800px;
+            max-width: 90%;
+            height: 500px;
+            background: rgba(40, 40, 40, 0.6);
+            backdrop-filter: blur(20px); /* The Blur Effect */
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            display: flex;
+            flex-direction: column;
+            padding: 40px;
+            box-sizing: border-box;
+            transition: all 0.5s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Content Layout */
+        .content-wrapper {
+            display: flex;
+            flex: 1;
+            align-items: center;
+            justify-content: center; /* Center for intro */
+            gap: 30px;
+            opacity: 1;
+            transition: opacity 0.4s ease;
+        }
+
+        .content-wrapper.fade-out {
+            opacity: 0;
+        }
+
+        /* Text Section */
+        .text-section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .tag {
+            background: linear-gradient(90deg, #ff9a9e 0%, #fecfef 99%, #fecfef 100%);
+            color: #333;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            width: fit-content;
+            margin-bottom: 15px;
+            display: none; /* Hidden on intro */
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin: 0 0 15px 0;
+            line-height: 1.1;
+        }
+
+        p {
+            font-size: 1.1rem;
+            line-height: 1.5;
+            color: #ddd;
+            margin-bottom: 25px;
+        }
+
+        .action-btn {
+            padding: 10px 24px;
+            background-color: white;
+            color: #000;
+            border: none;
+            border-radius: 30px;
+            font-weight: 600;
+            cursor: pointer;
+            width: fit-content;
+            transition: transform 0.2s;
+            text-decoration: none;
+            display: none; /* Hidden on intro */
+        }
+
+        .action-btn:hover {
+            transform: scale(1.05);
+        }
+
+        /* Image Section (Right side) */
+        .image-section {
+            flex: 1;
+            height: 100%;
+            border-radius: 16px;
+            background-size: cover;
+            background-position: center;
+            display: none; /* Hidden on intro */
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        /* 3. Navigation Controls (Bottom) */
+        .nav-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        .nav-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: background 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .nav-btn.hidden {
+            visibility: hidden;
+        }
+
+        /* Center Start Button style */
+        .start-btn {
+            padding: 15px 40px;
+            font-size: 1.2rem;
+            background: white;
+            color: black;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            margin-top: 20px;
+            font-weight: bold;
+            box-shadow: 0 0 20px rgba(255,255,255,0.4);
+            transition: transform 0.2s;
+        }
+        .start-btn:hover { transform: scale(1.05); }
+
+        /* Helper to center content in intro mode */
+        .centered-text {
+            text-align: center;
+            align-items: center;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .card { height: 80vh; padding: 20px; }
+            .content-wrapper { flex-direction: column; }
+            .image-section { width: 100%; height: 200px; }
+            h1 { font-size: 1.8rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="bg-container" id="bgGrid">
+        </div>
+
+    <div class="card">
+        <div class="content-wrapper" id="contentWrapper">
+            <div class="text-section centered-text">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/9/9e/Microsoft_Edge_logo_%282019%29.svg" width="60" style="margin-bottom: 20px;">
+                <h1>Welcome to My<br>2025 Portfolio</h1>
+                <p>Let's celebrate the projects and skills<br>that made this year special.</p>
+                <button class="start-btn" onclick="nextSlide()">Start Journey</button>
+            </div>
+        </div>
+
+        <div class="nav-controls">
+            <button class="nav-btn hidden" id="prevBtn" onclick="prevSlide()">← Back</button>
+            <button class="nav-btn hidden" id="nextBtn" onclick="nextSlide()">Next →</button>
+        </div>
+    </div>
+
+    <script>
+        /* --- JAVASCRIPT LOGIC --- */
+
+        // 1. DATA: Change this to your actual portfolio content
+        const slides = [
+            {
+                type: 'intro',
+                title: "Welcome to My<br>2025 Portfolio",
+                desc: "Let's celebrate the projects and skills<br>that made this year special.",
+                img: "" // No image for intro
+            },
+            {
+                type: 'content',
+                tag: "JANUARY - PROJECT 01",
+                title: "E-Commerce Web App",
+                desc: "Built a full-stack e-commerce solution using React and Node.js. Helped 100+ users shop online seamlessly with secure payment integration.",
+                btnText: "View Code",
+                btnLink: "#",
+                img: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
+            },
+            {
+                type: 'content',
+                tag: "MARCH - DESIGN",
+                title: "UI/UX Case Study",
+                desc: "Redesigned a mobile banking app to improve accessibility. Conducted user research and created high-fidelity Figma prototypes.",
+                btnText: "See Case Study",
+                btnLink: "#",
+                img: "https://images.unsplash.com/photo-1561070791-2526d30994b5?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
+            },
+            {
+                type: 'content',
+                tag: "JULY - SKILLS",
+                title: "Mastering Python",
+                desc: "Spent the summer diving deep into data analysis and automation. Created scripts that saved 20 hours of manual work per week.",
+                btnText: "Read Blog",
+                btnLink: "#",
+                img: "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
+            },
+            {
+                type: 'content',
+                tag: "DECEMBER - SUMMARY",
+                title: "Ready for 2026",
+                desc: "Looking for new opportunities to bring creativity and code together. Let's build something amazing.",
+                btnText: "Hire Me",
+                btnLink: "mailto:email@example.com",
+                img: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
+            }
+        ];
+
+        let currentIndex = 0;
+
+        // Elements
+        const contentWrapper = document.getElementById('contentWrapper');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const bgGrid = document.getElementById('bgGrid');
+
+        // Initialize Background Grid with random images
+        function initBackground() {
+            let html = '';
+            for(let i=0; i<24; i++) {
+                // Using picsum for random placeholder images
+                html += `<div class="bg-item" style="background-image: url('https://picsum.photos/300/300?random=${i}')"></div>`;
+            }
+            bgGrid.innerHTML = html;
+        }
+
+        // Render the current slide
+        function renderSlide() {
+            const slide = slides[currentIndex];
+            const isIntro = slide.type === 'intro';
+
+            // Add fade-out class to trigger CSS transition
+            contentWrapper.classList.add('fade-out');
+
+            setTimeout(() => {
+                let html = '';
+
+                if (isIntro) {
+                    // INTRO LAYOUT
+                    html = `
+                        <div class="text-section centered-text">
+                            <svg width="60" height="60" viewBox="0 0 24 24" fill="white" style="margin-bottom:20px"><path d="M12 2L2 7l10 5 10-5-10-5zm0 9l2.5-1.25L12 8.75l-2.5 1.25L12 11zm0 2.5l-5-2.5-5 2.5 10 5 10-5-5-2.5-5 2.5z"/></svg>
+                            <h1>${slide.title}</h1>
+                            <p>${slide.desc}</p>
+                            <button class="start-btn" onclick="nextSlide()">Start</button>
+                        </div>
+                    `;
+                } else {
+                    // CONTENT LAYOUT (Split Screen)
+                    html = `
+                        <div class="text-section">
+                            <div class="tag">${slide.tag}</div>
+                            <h1>${slide.title}</h1>
+                            <p>${slide.desc}</p>
+                            <a href="${slide.btnLink}" class="action-btn" style="display:inline-block">${slide.btnText}</a>
+                        </div>
+                        <div class="image-section" style="background-image: url('${slide.img}'); display:block"></div>
+                    `;
+                }
+
+                contentWrapper.innerHTML = html;
+                
+                // Update Button Visibility
+                if (currentIndex === 0) {
+                    prevBtn.classList.add('hidden');
+                    nextBtn.classList.add('hidden');
+                } else {
+                    prevBtn.classList.remove('hidden');
+                    nextBtn.classList.remove('hidden');
+                    
+                    // Logic for last slide
+                    if(currentIndex === slides.length - 1) {
+                         nextBtn.textContent = "Finish";
+                    } else {
+                         nextBtn.textContent = "Next →";
+                    }
+                }
+
+                // Remove fade-out to show new content
+                contentWrapper.classList.remove('fade-out');
+            }, 400); // Matches CSS transition time
+        }
+
+        function nextSlide() {
+            if (currentIndex < slides.length - 1) {
+                currentIndex++;
+                renderSlide();
+            }
+        }
+
+        function prevSlide() {
+            if (currentIndex > 0) {
+                currentIndex--;
+                renderSlide();
+            }
+        }
+
+        // Run on load
+        initBackground();
+        // Initial render happens in HTML, but we ensure logic is ready
+    </script>
+</body>
+</html>

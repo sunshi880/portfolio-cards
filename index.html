@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio Stack Effect</title>
+    <style>
+        :root {
+            --bg-gradient: linear-gradient(135deg, #0f172a, #1e293b, #000000);
+            --card-glass: rgba(255, 255, 255, 0.08);
+            --border-glass: rgba(255, 255, 255, 0.2);
+            --accent: #38bdf8;
+        }
+
+        body {
+            margin: 0;
+            height: 100vh;
+            background: var(--bg-gradient);
+            background-size: 200% 200%;
+            animation: gradientMove 10s ease infinite;
+            font-family: 'Segoe UI', sans-serif;
+            color: white;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        @keyframes gradientMove {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* 3D Perspective Container */
+        .stage {
+            position: relative;
+            width: 100%;
+            height: 60vh;
+            perspective: 1000px; /* Isse 3D depth milti hai */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Common Card Styles */
+        .card {
+            position: absolute;
+            width: 320px;
+            height: 420px;
+            background: var(--card-glass);
+            border: 1px solid var(--border-glass);
+            border-radius: 20px;
+            backdrop-filter: blur(20px);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            transition: all 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            cursor: pointer;
+            overflow: hidden;
+        }
+
+        .card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            pointer-events: none;
+        }
+
+        .card h2 { font-size: 1.5rem; margin: 10px 0; }
+        .card p { font-size: 0.9rem; color: #cbd5e1; line-height: 1.4; }
+        
+        .card-btn {
+            margin-top: auto;
+            padding: 10px 20px;
+            background: white;
+            color: black;
+            border: none;
+            border-radius: 30px;
+            font-weight: bold;
+            cursor: pointer;
+            opacity: 0; /* Hidden by default */
+            transform: translateY(10px);
+            transition: 0.3s;
+        }
+
+        /* --- STACK LOGIC (The Magic) --- */
+        
+        /* 1. Active Card (Front) */
+        .card.active {
+            transform: translate3d(0, 0, 0) scale(1);
+            opacity: 1;
+            z-index: 10;
+            filter: blur(0);
+            border-color: var(--accent);
+        }
+        .card.active .card-btn { opacity: 1; transform: translateY(0); }
+
+        /* 2. Next Card (Floating in Background) */
+        .card.next {
+            transform: translate3d(40px, -20px, -100px) scale(0.9) rotate(5deg);
+            opacity: 0.6;
+            z-index: 9;
+            filter: blur(2px);
+        }
+        
+        /* 3. Next-Next Card (Further Back) */
+        .card.next-2 {
+            transform: translate3d(80px, -40px, -200px) scale(0.8) rotate(10deg);
+            opacity: 0.4;
+            z-index: 8;
+            filter: blur(4px);
+        }
+
+        /* 4. Previous Card (Gone to Left) */
+        .card.prev {
+            transform: translate3d(-300px, 50px, 0) scale(0.8) rotate(-15deg);
+            opacity: 0;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* Hidden Cards */
+        .card.hidden {
+            transform: translate3d(100px, -60px, -300px) scale(0);
+            opacity: 0;
+            z-index: -1;
+        }
+
+        /* Navigation */
+        .nav-bar {
+            margin-top: 40px;
+            display: flex;
+            gap: 20px;
+            z-index: 20;
+        }
+        
+        .nav-btn {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: white;
+            padding: 12px 30px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: 0.3s;
+        }
+        .nav-btn:hover { background: white; color: black; }
+
+    </style>
+</head>
+<body>
+
+    <div class="stage">
+        <div class="card active" onclick="goNext()">
+            <div style="font-size: 3rem; margin-top: 40px;">👋</div>
+            <h2>Welcome</h2>
+            <p>Click "Next" to see my projects float in from the background.</p>
+            <button class="card-btn">Start</button>
+        </div>
+
+        <div class="card next" onclick="goNext()">
+            <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=400&q=80" alt="Code">
+            <h2>Web Development</h2>
+            <p>Full-stack applications built with modern technologies.</p>
+            <button class="card-btn">View Details</button>
+        </div>
+
+        <div class="card next-2" onclick="goNext()">
+            <img src="https://images.unsplash.com/photo-1561070791-2526d30994b5?w=400&q=80" alt="Design">
+            <h2>UI/UX Design</h2>
+            <p>Crafting beautiful and intuitive user interfaces.</p>
+            <button class="card-btn">View Portfolio</button>
+        </div>
+
+        <div class="card hidden" onclick="goNext()">
+            <img src="https://images.unsplash.com/photo-1533750349088-cd871a92f312?w=400&q=80" alt="Marketing">
+            <h2>Digital Marketing</h2>
+            <p>SEO strategies and content marketing campaigns.</p>
+            <button class="card-btn">See Stats</button>
+        </div>
+        
+        <div class="card hidden" onclick="goNext()">
+            <div style="font-size: 3rem; margin-top: 40px;">📬</div>
+            <h2>Contact Me</h2>
+            <p>Ready to start a project? Let's connect.</p>
+            <button class="card-btn" onclick="location.reload()">Replay</button>
+        </div>
+    </div>
+
+    <div class="nav-bar">
+        <button class="nav-btn" onclick="goNext()">Next Project &#8594;</button>
+    </div>
+
+    <script>
+        // Sare cards select karein
+        const cards = document.querySelectorAll('.card');
+        let activeIndex = 0;
+
+        function updateCards() {
+            cards.forEach((card, index) => {
+                // Classes reset karein
+                card.className = 'card';
+
+                // Logic to determine position based on activeIndex
+                if (index === activeIndex) {
+                    card.classList.add('active'); // Front card
+                } else if (index === activeIndex + 1) {
+                    card.classList.add('next'); // 2nd card (background)
+                } else if (index === activeIndex + 2) {
+                    card.classList.add('next-2'); // 3rd card (deep background)
+                } else if (index < activeIndex) {
+                    card.classList.add('prev'); // Gone card
+                } else {
+                    card.classList.add('hidden'); // Baaki sab chupa do
+                }
+            });
+        }
+
+        function goNext() {
+            if (activeIndex < cards.length - 1) {
+                activeIndex++;
+            } else {
+                activeIndex = 0; // Loop wapis start par
+            }
+            updateCards();
+        }
+
+        // Keyboard Navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === "ArrowRight" || e.key === " ") goNext();
+        });
+
+    </script>
+</body>
+</html>
